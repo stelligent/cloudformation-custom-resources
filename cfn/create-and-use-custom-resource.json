@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
  
-  "Description" : "AWS CloudFormation to set up a custom CloudFormation resource with Lambda.",
+  "Description" : "AWS CloudFormation to set up a custom CloudFormation resource with Lambda, and then call it in the same template.",
  
   "Parameters": {
     "LambdaRuntime" : {
@@ -24,7 +24,6 @@
       "Default" : "custom-resource.zip"
     }
   },
-
   "Resources" : {
     "CustomFunction": {
       "Type": "AWS::Lambda::Function",
@@ -69,9 +68,20 @@
           }
         }]
       }
+    },
+    "CustomResource": {
+      "Type": "Custom::CustomResource",
+      "Properties": {
+        "ServiceToken": { "Fn::GetAtt" : ["CustomFunction", "Arn"] },
+        "ParameterOne": "Parameter to pass into Custom Lambda Function"
+      }
     }
   },
   "Outputs" : {
+    "Message" : {
+      "Description": "The message from the custom resource.",
+      "Value" : { "Fn::GetAtt": [ "CustomResource", "Message" ] }
+    },    
     "CustomFunctionArn" : {
       "Description": "The arn of the custom resource function.",
       "Value" : { "Fn::GetAtt" : ["CustomFunction", "Arn"] }

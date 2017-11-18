@@ -2,24 +2,18 @@ var aws = require("aws-sdk");
  
 exports.handler = function(event, context) {
     console.log("REQUEST RECEIVED:\n" + JSON.stringify(event));
-    console.log("Hi Jonny!")
-    // For Delete requests, immediately send a SUCCESS response.
     if (event.RequestType == "Create") {
         console.log("CREATE!")
-        sendResponse(event, context, "SUCCESS");
-        return;
-    }
-     // For Delete requests, immediately send a SUCCESS response.
-    else if (event.RequestType == "Update") {
+        // Put your custom create logic here
+        sendResponse(event, context, "SUCCESS", {"Message" : "Resource creation successful!"});
+    } else if (event.RequestType == "Update") {
         console.log("UDPATE!")
-        sendResponse(event, context, "SUCCESS");
-        return;
-    }
-    // For Delete requests, immediately send a SUCCESS response.
-    else if (event.RequestType == "Delete") {
+        // Put your custom update logic here
+        sendResponse(event, context, "SUCCESS", {"Message" : "Resource update successful!"});
+    } else if (event.RequestType == "Delete") {
         console.log("DELETE!")
-        sendResponse(event, context, "SUCCESS");
-        return;
+        // Put your custom delete logic here
+        sendResponse(event, context, "SUCCESS", {"Message" : "Resource deletion successful!"});
     } else {
         console.log("FAILURE!")
         sendResponse(event, context, "FAILURE");
