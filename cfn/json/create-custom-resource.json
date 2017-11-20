@@ -7,7 +7,7 @@
     "LambdaRuntime" : {
       "Description" : "The Lambda runtime to use",
       "Type" : "String",
-      "AllowedValues" : ["nodejs4.3"]
+      "AllowedValues" : ["nodejs4.3", "python2.7"]
     },
     "ModuleName" : {
       "Description" : "The name of the JavaScript file",
