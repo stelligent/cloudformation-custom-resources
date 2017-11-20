@@ -1,6 +1,7 @@
 import json
 import httplib
 import logging
+from urllib2 import build_opener, HTTPHandler, Request
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -19,10 +20,6 @@ def handler(event, context):
         logger.info('FAILED!')
 
 def sendResponse(event, context, responseStatus, responseData):
-    full_url = event['ResponseURL'][8:-1]
-    host, path = full_url.split('/', 1)
-    path = '/' + path
-
     responseBody = json.dumps({
         "Status": responseStatus,
         "Reason": "See the details in CloudWatch Log Stream: " + context.log_stream_name,
@@ -33,20 +30,15 @@ def sendResponse(event, context, responseStatus, responseData):
         "Data": responseData
     })
 
-    headers = {
-        "Content-Type": "",
-        "content-length": len(responseBody)
-    }
 
-    logger.info('Host: {}'.format(host))
-    logger.info('Path: {}'.format(path))
-    logger.info('Full URL: {}{}{}'.format('https://', host, path))
+    logger.info('ResponseURL: {}'.format(event['ResponseURL']))
     logger.info('ResponseBody: {}'.format(responseBody))
-    logger.info('Headers: {}'.format(headers))
-    
 
-    h = httplib.HTTPSConnection(host, 443)
-    h.set_debuglevel(1)
-    h.request('PUT', path, responseBody, headers)
-    response = h.getresponse()
-    h.close()
+    opener = build_opener(HTTPHandler)
+    request = Request(event['ResponseURL'], data=responseBody)
+    request.add_header('Content-Type', '')
+    request.add_header('Content-Length', len(responseBody))
+    request.get_method = lambda: 'PUT'
+    response = opener.open(request)
+    print("Status code: {}".format(response.getcode()))
+    print("Status message: {}".format(response.msg))
