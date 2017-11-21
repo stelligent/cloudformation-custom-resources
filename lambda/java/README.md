@@ -1,31 +1,8 @@
-CFN Custom Resources
-===============
-
-AWS lambda java function to manage Cloudformation Custom Resources
-
-Create cfn custom resource
+How to create and package java lamda function
 -------------------
 
-aws cloudformation create-stack \
---stack-name test-create-custom-resource-cfn-20171120154514\
---template-body file://cfn/json/create-custom-resource.json\
---capabilities CAPABILITY_IAM\
---disable-rollback\
---parameters\
-ParameterKey="S3Bucket",ParameterValue="jonny-test-custom-resource-bucket"\
-ParameterKey="S3Key",ParameterValue="customresource.zip"\
-ParameterKey="ModuleName",ParameterValue="com.stelligent.customresource"\
-ParameterKey="HandlerName",ParameterValue="CustomResourceHandler"\
-ParameterKey="LambdaRuntime",ParameterValue="java8"
-
-
-Use cfn custom resource
--------------------
-
-aws cloudformation create-stack \
---stack-name test-use-custom-resource-cfn-20171120153114\
---template-body file://cfn/json/use-custom-resource.json \
---disable-rollback \
---parameters \
-ParameterKey="CustomFunctionArn",\
-ParameterValue="$value-of-lambda-created-by-create-cfn-run"
+1. git clone git@github.com:stelligent/cloudformation-custom-resources.git
+2. cd cloudformation-custom-resources/lambda/java
+3. mvn package
+4. jar(zip) package will be created in target/customresource-1.0.0.jar
+5. Upload this to S3 bucket. Remember to pass this bucket name in as ParameterValue for ParameterKey="S3Bucket"
