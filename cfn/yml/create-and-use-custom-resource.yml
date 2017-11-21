@@ -8,6 +8,7 @@ Parameters:
     AllowedValues:
       - nodejs4.3
       - python2.7
+      - java8
   ModuleName:
     Description: The name of the JavaScript file
     Type: String

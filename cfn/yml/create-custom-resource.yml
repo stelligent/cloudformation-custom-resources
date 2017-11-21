@@ -7,10 +7,15 @@ Parameters:
     AllowedValues:
       - nodejs4.3
       - python2.7
+      - java8
   ModuleName:
     Description: The name of the JavaScript file
     Type: String
     Default: customresource
+  HandlerName:
+    Description: The name of the lambda handler
+    Type: String
+    Default: handler
   S3Bucket:
     Description: The name of the bucket that contains your packaged source
     Type: String
@@ -25,7 +30,7 @@ Resources:
       Code:
         S3Bucket: !Ref 'S3Bucket'
         S3Key: !Ref 'S3Key'
-      Handler: !Join ['', [!Ref 'ModuleName', .handler]]
+      Handler: !Join ['', [!Ref 'ModuleName', ., !Ref 'HandlerName']]
       Role: !GetAtt 'LambdaExecutionRole.Arn'
       Runtime: !Ref 'LambdaRuntime'
       Timeout: '30'
