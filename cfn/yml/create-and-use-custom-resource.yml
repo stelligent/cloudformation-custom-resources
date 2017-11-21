@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation to set up a custom CloudFormation resource with Lambda.
+Description: AWS CloudFormation to set up a custom CloudFormation resource with Lambda,
+  and then call it in the same template.
 Parameters:
   LambdaRuntime:
     Description: The Lambda runtime to use
@@ -57,7 +58,15 @@ Resources:
                 Action:
                   - ec2:DescribeImages
                 Resource: '*'
+  CustomResource:
+    Type: Custom::CustomResource
+    Properties:
+      ServiceToken: !GetAtt 'CustomFunction.Arn'
+      ParameterOne: Parameter to pass into Custom Lambda Function
 Outputs:
+  Message:
+    Description: The message from the custom resource.
+    Value: !GetAtt 'CustomResource.Message'
   CustomFunctionArn:
     Description: The arn of the custom resource function.
     Value: !GetAtt 'CustomFunction.Arn'

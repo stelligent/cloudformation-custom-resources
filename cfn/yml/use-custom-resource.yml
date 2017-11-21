@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation to consume a custom CloudFormation resource with Lambda.
+  It calls a previously created CloudFormation Custom Resource Lambda and puts the
+  result into the output of the stack.
+Parameters:
+  CustomFunctionArn:
+    Type: String
+    Description: the ARN of the custom resource (this is an output of the previous
+      CloudFormation stack
+Resources:
+  CustomResource:
+    Type: Custom::CustomResource
+    Properties:
+      ServiceToken: !Ref 'CustomFunctionArn'
+      ParameterOne: Parameter to pass into Custom Lambda Function
+Outputs:
+  Message:
+    Description: The message from the custom resource.
+    Value: !GetAtt 'CustomResource.Message'
