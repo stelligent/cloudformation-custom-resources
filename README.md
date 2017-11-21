@@ -26,7 +26,7 @@ Once that's in place, you can use the following commands to zip, upload, and the
 
     create_stack=create-custom-rsc
     use_stack=use-custom-rsc
-    bucket=jonny-test-custom-resource-bucket
+    bucket=whatever-you-wanna-call-your-bucket
 
     # if you're using Node.js or Java, change this to match that directory name
     pushd lambda/python
@@ -60,5 +60,37 @@ Once that's in place, you can use the following commands to zip, upload, and the
       --parameters \
         ParameterKey="CustomFunctionArn",ParameterValue="$custom_function_arn"
 
+#### But, Java.
+
+If you're looking to get the Java function running, the concepts are the same but the steps differ slightly because everything is harder in Java. :) Instead of making a zip file, we'll use maven to download all the dependencies and create a jar file, which we'll then upload into S3. You'll also need to include an extra parameter, `HandlerName`, so that Lambda knows which class and method to call. Here's an example of how you build and deploy the Java function:
+
+    pushd lambda/java 
+    rm -rf target 
+    mvn package
+    aws s3 cp target/customresource-1.0.0.jar s3://${bucket}/customresource-1.0.0.jar
+    mvn clean
+    popd
+    aws cloudformation create-stack \
+      --stack-name $create_stack \
+      --template-body file://cfn/json/create-custom-resource.json \
+      --capabilities CAPABILITY_IAM \
+      --disable-rollback \
+      --parameters \
+        ParameterKey="S3Bucket",ParameterValue="${bucket}" \
+        ParameterKey="S3Key",ParameterValue="customresource-1.0.0.jar" \
+        ParameterKey="ModuleName",ParameterValue="com.stelligent.customresource" \
+        ParameterKey="LambdaRuntime",ParameterValue="java8" \
+        ParameterKey="HandlerName",ParameterValue="CustomResourceHandler"
 
 
+Looking up the ARN of the function and creating a stack that uses the Java Lambda function is exactly the same.
+
+### Problems?
+
+We did our best to test out these examples, but if you notice any problems with any of them, we would be much obliged if you could let us know by [opening an issue](https://github.com/stelligent/cloudformation-custom-resources/issues)!
+
+### Special Thanks
+
+In true CloudFormation fashion, most of this work was built by finding something that kinda did what we wanted and then tweaking it until it worked. A lot of the concepts were based off the [Looking Up Amazon Machine Image IDs](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/walkthrough-custom-resources-lambda-lookup-amiids.html) from the official AWS documentation.
+
+Also, I wanted to extend a special thank you to @dghadge for putting together the Java Lambda function and to @lhitchon for providing very helpful advice about the Python function.
