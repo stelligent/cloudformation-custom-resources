@@ -12,7 +12,7 @@ This repository contains a superset of what you'll need to get started using cus
 
 For the sample templates, there are two flavors available: create-and-use of a custom resource in a single template, or separate templates for creation and use of the custom resouce. If you're going to be re-using your custom resource from a lot of other templates, you'll probably want to use separate templates for each, as having them in the same template will create a copy of the Lambda function for each stack. While the costs associated with that are negligible, if you're provisioning a lot of stacks it can make a mess pretty easily.
 
-Once you've decided on which languages you'll want to use, you simply have to implement the logic for the create, read, and update actions that CloudFormation will send you. Depending on what your custom resource does, you may not need to implement them all, or you may re-use the logic for multiple actions. 
+Once you've decided on which languages you'll want to use, you simply have to implement the logic for the create, read, and update actions that CloudFormation will send you. Depending on what your custom resource does, you may not need to implement them all, or you may re-use the logic for multiple actions. The documentation for CloudFormation custom resources is [here](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref.html), and gives details on the request object your code should expect, and the responses that CloudFormation accepts.
 
 ### Running the templates
 
