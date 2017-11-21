@@ -14,10 +14,13 @@ def handler(event, context):
         sendResponse(event, context, "SUCCESS", { "Message": "Resource creation successful!" })
     elif event['RequestType'] == 'Update':
         logger.info('UPDATE!')
+        sendResponse(event, context, "SUCCESS", { "Message": "Resource update successful!" })
     elif event['RequestType'] == 'Delete':
         logger.info('DELETE!')
+        sendResponse(event, context, "SUCCESS", { "Message": "Resource deletion successful!" })
     else:
         logger.info('FAILED!')
+        sendResponse(event, context, "FAILED", { "Message": "Resource creation successful!" })
 
 def sendResponse(event, context, responseStatus, responseData):
     responseBody = json.dumps({
