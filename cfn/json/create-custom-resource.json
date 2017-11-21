@@ -7,12 +7,17 @@
     "LambdaRuntime" : {
       "Description" : "The Lambda runtime to use",
       "Type" : "String",
-      "AllowedValues" : ["nodejs4.3", "python2.7"]
+      "AllowedValues" : ["nodejs4.3", "python2.7", "java8"]
     },
     "ModuleName" : {
       "Description" : "The name of the JavaScript file",
       "Type" : "String",
       "Default" : "customresource"
+    },
+    "HandlerName" : {
+      "Description" : "The name of the lambda handler",
+      "Type" : "String",
+      "Default" : "handler"
     },
     "S3Bucket" : {
       "Description" : "The name of the bucket that contains your packaged source",
@@ -33,7 +38,7 @@
             "S3Bucket": { "Ref": "S3Bucket" },
             "S3Key": { "Ref": "S3Key" }
         },
-        "Handler": { "Fn::Join" : [ "", [{ "Ref": "ModuleName" },".handler"] ] },
+        "Handler": { "Fn::Join" : [ "", [{ "Ref": "ModuleName" },".",{ "Ref": "HandlerName" }] ] },
         "Role": { "Fn::GetAtt" : ["LambdaExecutionRole", "Arn"] },        
         "Runtime": { "Ref" : "LambdaRuntime"},
         "Timeout": "30"
