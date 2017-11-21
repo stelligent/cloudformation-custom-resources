@@ -20,7 +20,7 @@ def handler(event, context):
         sendResponse(event, context, "SUCCESS", { "Message": "Resource deletion successful!" })
     else:
         logger.info('FAILED!')
-        sendResponse(event, context, "FAILED", { "Message": "Resource creation successful!" })
+        sendResponse(event, context, "FAILED", { "Message": "Unexpected event received from CloudFormation" })
 
 def sendResponse(event, context, responseStatus, responseData):
     responseBody = json.dumps({
