@@ -9,6 +9,10 @@ Parameters:
       - nodejs4.3
       - python2.7
       - java8
+  HandlerName:
+    Description: The name of the lambda handler
+    Type: String
+    Default: handler
   ModuleName:
     Description: The name of the JavaScript file
     Type: String
@@ -27,7 +31,7 @@ Resources:
       Code:
         S3Bucket: !Ref 'S3Bucket'
         S3Key: !Ref 'S3Key'
-      Handler: !Join ['', [!Ref 'ModuleName', .handler]]
+      Handler: !Join ['', [!Ref 'ModuleName', ., !Ref 'HandlerName']]
       Role: !GetAtt 'LambdaExecutionRole.Arn'
       Runtime: !Ref 'LambdaRuntime'
       Timeout: '30'

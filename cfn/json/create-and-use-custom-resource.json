@@ -9,6 +9,11 @@
       "Type" : "String",
       "AllowedValues" : ["nodejs4.3", "python2.7", "java8"]
     },
+    "HandlerName" : {
+      "Description" : "The name of the lambda handler",
+      "Type" : "String",
+      "Default" : "handler"
+    },
     "ModuleName" : {
       "Description" : "The name of the JavaScript file",
       "Type" : "String",
@@ -32,7 +37,7 @@
             "S3Bucket": { "Ref": "S3Bucket" },
             "S3Key": { "Ref": "S3Key" }
         },
-        "Handler": { "Fn::Join" : [ "", [{ "Ref": "ModuleName" },".handler"] ] },
+        "Handler": { "Fn::Join" : [ "", [{ "Ref": "ModuleName" },".",{ "Ref": "HandlerName" }] ] },
         "Role": { "Fn::GetAtt" : ["LambdaExecutionRole", "Arn"] },        
         "Runtime": { "Ref" : "LambdaRuntime"},
         "Timeout": "30"
