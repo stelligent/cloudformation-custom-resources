@@ -5,9 +5,18 @@ Parameters:
     Description: The Lambda runtime to use
     Type: String
     AllowedValues:
+      - nodejs
       - nodejs4.3
-      - python2.7
+      - nodejs6.10
+      - nodejs8.10
       - java8
+      - python2.7
+      - python3.6
+      - dotnetcore1.0
+      - dotnetcore2.0
+      - dotnetcore2.1
+      - nodejs4.3-edge
+      - go1.x
   ModuleName:
     Description: The name of the JavaScript file
     Type: String
