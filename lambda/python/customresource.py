@@ -10,6 +10,7 @@ logger.setLevel(logging.INFO)
 
 
 def handler(event, context):
+    '''Handle Lambda event from AWS'''
     # Setup alarm for remaining runtime minus a second
     signal.alarm((context.get_remaining_time_in_millis() / 1000) - 1)
     try:
