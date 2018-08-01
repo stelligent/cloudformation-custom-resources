@@ -32,7 +32,7 @@ def handler(event, context):
             LOGGER.info('FAILED!')
             send_response(event, context, "FAILED",
                           {"Message": "Unexpected event received from CloudFormation"})
-    except:
+    except: #pylint: disable=W0702
         LOGGER.info('FAILED!')
         send_response(event, context, "FAILED", {
             "Message": "Exception during processing"})
