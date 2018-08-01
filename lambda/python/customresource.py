@@ -1,3 +1,5 @@
+'''Custom generic CloudFormation resource example'''
+
 import json
 import httplib
 import logging
