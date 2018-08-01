@@ -1,26 +1,37 @@
 import json
 import httplib
 import logging
+import signal
 from urllib2 import build_opener, HTTPHandler, Request
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def handler(event, context):
-    logger.info('REQUEST RECEIVED:\n {}'.format(event))
-    logger.info('REQUEST RECEIVED:\n {}'.format(context))
-    if event['RequestType'] == 'Create':
-        logger.info('CREATE!')
-        sendResponse(event, context, "SUCCESS", { "Message": "Resource creation successful!" })
-    elif event['RequestType'] == 'Update':
-        logger.info('UPDATE!')
-        sendResponse(event, context, "SUCCESS", { "Message": "Resource update successful!" })
-    elif event['RequestType'] == 'Delete':
-        logger.info('DELETE!')
-        sendResponse(event, context, "SUCCESS", { "Message": "Resource deletion successful!" })
-    else:
+    # Setup alarm for remaining runtime minus a second
+    signal.alarm((context.get_remaining_time_in_millis() / 1000) - 1)
+    try:
+        logger.info('REQUEST RECEIVED:\n %s', event)
+        logger.info('REQUEST RECEIVED:\n %s', context)
+        if event['RequestType'] == 'Create':
+            logger.info('CREATE!')
+            sendResponse(event, context, "SUCCESS",
+                { "Message": "Resource creation successful!" })
+        elif event['RequestType'] == 'Update':
+            logger.info('UPDATE!')
+            sendResponse(event, context, "SUCCESS",
+                { "Message": "Resource update successful!" })
+        elif event['RequestType'] == 'Delete':
+            logger.info('DELETE!')
+            sendResponse(event, context, "SUCCESS",
+                { "Message": "Resource deletion successful!" })
+        else:
+            logger.info('FAILED!')
+            sendResponse(event, context, "FAILED",
+                { "Message": "Unexpected event received from CloudFormation" })
+    except:
         logger.info('FAILED!')
-        sendResponse(event, context, "FAILED", { "Message": "Unexpected event received from CloudFormation" })
+        sendResponse(event, context, "FAILED", { "Message": "Exception during processing" })
 
 def sendResponse(event, context, responseStatus, responseData):
     responseBody = json.dumps({
@@ -45,3 +56,9 @@ def sendResponse(event, context, responseStatus, responseData):
     response = opener.open(request)
     print("Status code: {}".format(response.getcode()))
     print("Status message: {}".format(response.msg))
+
+def timeout_handler(_signal, _frame):
+    '''Handle SIGALRM'''
+    raise Exception('Time exceeded')
+
+signal.signal(signal.SIGALRM, timeout_handler)
