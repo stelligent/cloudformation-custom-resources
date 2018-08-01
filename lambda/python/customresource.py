@@ -1,7 +1,6 @@
 '''Custom generic CloudFormation resource example'''
 
 import json
-import httplib
 import logging
 import signal
 from urllib2 import build_opener, HTTPHandler, Request
