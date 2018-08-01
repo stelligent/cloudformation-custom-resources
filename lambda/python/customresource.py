@@ -48,9 +48,8 @@ def sendResponse(event, context, responseStatus, responseData):
         "Data": responseData
     })
 
-
-    logger.info('ResponseURL: {}'.format(event['ResponseURL']))
-    logger.info('ResponseBody: {}'.format(responseBody))
+    logger.info('ResponseURL: %s', event['ResponseURL'])
+    logger.info('ResponseBody: %s', responseBody)
 
     opener = build_opener(HTTPHandler)
     request = Request(event['ResponseURL'], data=responseBody)
