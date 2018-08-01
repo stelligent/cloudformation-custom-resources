@@ -5,8 +5,8 @@ import logging
 import signal
 from urllib2 import build_opener, HTTPHandler, Request
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+LOGGER = logging.getLogger()
+LOGGER.setLevel(logging.INFO)
 
 
 def handler(event, context):
@@ -14,26 +14,26 @@ def handler(event, context):
     # Setup alarm for remaining runtime minus a second
     signal.alarm((context.get_remaining_time_in_millis() / 1000) - 1)
     try:
-        logger.info('REQUEST RECEIVED:\n %s', event)
-        logger.info('REQUEST RECEIVED:\n %s', context)
+        LOGGER.info('REQUEST RECEIVED:\n %s', event)
+        LOGGER.info('REQUEST RECEIVED:\n %s', context)
         if event['RequestType'] == 'Create':
-            logger.info('CREATE!')
+            LOGGER.info('CREATE!')
             sendResponse(event, context, "SUCCESS",
                          {"Message": "Resource creation successful!"})
         elif event['RequestType'] == 'Update':
-            logger.info('UPDATE!')
+            LOGGER.info('UPDATE!')
             sendResponse(event, context, "SUCCESS",
                          {"Message": "Resource update successful!"})
         elif event['RequestType'] == 'Delete':
-            logger.info('DELETE!')
+            LOGGER.info('DELETE!')
             sendResponse(event, context, "SUCCESS",
                          {"Message": "Resource deletion successful!"})
         else:
-            logger.info('FAILED!')
+            LOGGER.info('FAILED!')
             sendResponse(event, context, "FAILED",
                          {"Message": "Unexpected event received from CloudFormation"})
     except:
-        logger.info('FAILED!')
+        LOGGER.info('FAILED!')
         sendResponse(event, context, "FAILED", {
                      "Message": "Exception during processing"})
 
@@ -49,8 +49,8 @@ def sendResponse(event, context, responseStatus, responseData):
         "Data": responseData
     })
 
-    logger.info('ResponseURL: %s', event['ResponseURL'])
-    logger.info('ResponseBody: %s', responseBody)
+    LOGGER.info('ResponseURL: %s', event['ResponseURL'])
+    LOGGER.info('ResponseBody: %s', responseBody)
 
     opener = build_opener(HTTPHandler)
     request = Request(event['ResponseURL'], data=responseBody)
