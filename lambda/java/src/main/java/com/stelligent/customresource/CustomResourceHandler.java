@@ -48,12 +48,12 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
       final String responseStatus,
       JSONObject responseData) {
 
-    String responseURL = (String) input.get("ResponseURL");
-    context.getLogger().log("ResponseURL: " + responseURL);
+    String responseUrl = (String) input.get("ResponseURL");
+    context.getLogger().log("ResponseURL: " + responseUrl);
 
     URL url;
     try {
-      url = new URL(responseURL);
+      url = new URL(responseUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setRequestMethod("PUT");
