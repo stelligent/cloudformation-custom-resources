@@ -42,7 +42,10 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
     }
   }
 
-  public Object sendResponse(final Map<String, Object> input, final Context context, final String responseStatus,
+  /** Send a response to CloudFormation regarding progress in creating resource. */
+  public Object sendResponse(final Map<String, Object> input,
+      final Context context,
+      final String responseStatus,
       JSONObject responseData) {
 
     String responseURL = (String) input.get("ResponseURL");
