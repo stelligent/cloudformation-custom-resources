@@ -57,9 +57,8 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setRequestMethod("PUT");
-      OutputStreamWriter response = new OutputStreamWriter(connection.getOutputStream());
-      JSONObject responseBody = new JSONObject();
 
+      JSONObject responseBody = new JSONObject();
       responseBody.put("Status", responseStatus);
       responseBody.put("PhysicalResourceId", context.getLogStreamName());
       responseBody.put("StackId", input.get("StackId"));
@@ -67,6 +66,7 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
       responseBody.put("LogicalResourceId", input.get("LogicalResourceId"));
       responseBody.put("Data", responseData);
 
+      OutputStreamWriter response = new OutputStreamWriter(connection.getOutputStream());
       response.write(responseBody.toString());
       response.close();
       context.getLogger().log("Response Code: " + connection.getResponseCode());
