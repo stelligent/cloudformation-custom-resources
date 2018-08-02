@@ -21,17 +21,17 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
 
     JSONObject responseData = new JSONObject();
 
-    if (requestType!=null && requestType.equalsIgnoreCase("Create")) {
+    if (requestType != null && requestType.equalsIgnoreCase("Create")) {
       logger.log("CREATE!");
       // Put your custom create logic here
       responseData.put("Message", "Resource creation successful!");
       return sendResponse(input, context, "SUCCESS", responseData);
-    } else if (requestType!=null && requestType.equalsIgnoreCase("Update")) {
+    } else if (requestType != null && requestType.equalsIgnoreCase("Update")) {
       logger.log("UDPATE!");
       // Put your custom update logic here
       responseData.put("Message", "Resource update successful!");
       return sendResponse(input, context, "SUCCESS", responseData);
-    } else if (requestType!=null && requestType.equalsIgnoreCase("Delete")) {
+    } else if (requestType != null && requestType.equalsIgnoreCase("Delete")) {
       logger.log("DELETE!");
       // Put your custom delete logic here
       responseData.put("Message", "Resource deletion successful!");
