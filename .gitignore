@@ -2,3 +2,5 @@ lambda/java/target
 lambda/java/dependency-reduced-pom.xml
 .vscode/
 *.pyc
+.gradle/
+*/java/build/
