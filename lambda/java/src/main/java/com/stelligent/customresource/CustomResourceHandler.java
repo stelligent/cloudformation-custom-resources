@@ -75,7 +75,8 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
   }
 
   /** Send a response to CloudFormation regarding progress in creating resource. */
-  public Object sendResponse(final Map<String, Object> input,
+  public final Object sendResponse(
+      final Map<String, Object> input,
       final Context context,
       final String responseStatus,
       JSONObject responseData) {
