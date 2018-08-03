@@ -23,29 +23,55 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
     LambdaLogger logger = context.getLogger();
     logger.log("Input: " + input);
 
-    String requestType = (String) input.get("RequestType");
+    final String requestType = (String) input.get("RequestType");
 
+    ExecutorService service = Executors.newSingleThreadExecutor();
     JSONObject responseData = new JSONObject();
+    try {
+      if (requestType == null) {
+        throw new RuntimeException();
+      }
 
-    if (requestType != null && requestType.equalsIgnoreCase("Create")) {
-      logger.log("CREATE!");
-      // Put your custom create logic here
-      responseData.put("Message", "Resource creation successful!");
-      return sendResponse(input, context, "SUCCESS", responseData);
-    } else if (requestType != null && requestType.equalsIgnoreCase("Update")) {
-      logger.log("UDPATE!");
-      // Put your custom update logic here
-      responseData.put("Message", "Resource update successful!");
-      return sendResponse(input, context, "SUCCESS", responseData);
-    } else if (requestType != null && requestType.equalsIgnoreCase("Delete")) {
-      logger.log("DELETE!");
-      // Put your custom delete logic here
-      responseData.put("Message", "Resource deletion successful!");
-      return sendResponse(input, context, "SUCCESS", responseData);
-    } else {
+      Runnable r = new Runnable() {
+        @Override
+        public void run() {
+          try {
+            Thread.sleep(10000);
+          } catch (final InterruptedException e) {
+            // empty block
+          }
+          if (requestType.equalsIgnoreCase("Create")) {
+            logger.log("CREATE!");
+            // Put your custom create logic here
+            responseData.put("Message", "Resource creation successful!");
+            sendResponse(input, context, "SUCCESS", responseData);
+          } else if (requestType.equalsIgnoreCase("Update")) {
+            logger.log("UDPATE!");
+            // Put your custom update logic here
+            responseData.put("Message", "Resource update successful!");
+            sendResponse(input, context, "SUCCESS", responseData);
+          } else if (requestType.equalsIgnoreCase("Delete")) {
+            logger.log("DELETE!");
+            // Put your custom delete logic here
+            responseData.put("Message", "Resource deletion successful!");
+            sendResponse(input, context, "SUCCESS", responseData);
+          } else {
+            logger.log("FAILURE!");
+            sendResponse(input, context, "FAILURE", responseData);
+          }
+        }
+      };
+      Future<?> f = service.submit(r);
+      f.get(context.getRemainingTimeInMillis() - 1000, TimeUnit.MILLISECONDS);
+    } catch (final TimeoutException | InterruptedException
+                   | ExecutionException e) {
       logger.log("FAILURE!");
-      return sendResponse(input, context, "FAILURE", responseData);
+      sendResponse(input, context, "FAILURE", responseData);
+      // Took too long!
+    } finally {
+      service.shutdown();
     }
+    return null;
   }
 
   /** Send a response to CloudFormation regarding progress in creating resource. */
