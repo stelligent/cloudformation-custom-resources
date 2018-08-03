@@ -1,5 +1,8 @@
-How to create and package java lamda function
--------------------
+AWS Lambda java8 CloudFormation custom resource example
+=======================================================
+
+How to create and package java lambda function
+----------------------------------------------
 
 1. git clone git@github.com:stelligent/cloudformation-custom-resources.git
 2. cd cloudformation-custom-resources/lambda/java
