@@ -21,12 +21,11 @@ exports.handler = function (event, context, callback) {
 }
 
 function setupWatchdogTimer (event, context, callback) {
-  // When timer triggers, emit an event to the 'myErrorHandler' function
   const timeoutHandler = () => {
     console.log('Timeout FAILURE!')
-    // Emit event to 'myErrorHandler', then callback with an error from this
+    // Emit event to 'sendResponse', then callback with an error from this
     // function
-    sendResponse(event, context, 'FAILURE').promise()
+    new Promise(() => sendResponse(event, context, 'FAILURE'))
       .then(() => callback(new Error('Function timed out')))
   }
 
