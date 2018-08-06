@@ -4,3 +4,4 @@ lambda/java/dependency-reduced-pom.xml
 *.pyc
 .gradle/
 */java/build/
+node_modules/
