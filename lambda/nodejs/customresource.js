@@ -15,8 +15,8 @@ exports.handler = function (event, context, callback) {
     // Put your custom delete logic here
     sendResponse(event, context, 'SUCCESS', { 'Message': 'Resource deletion successful!' })
   } else {
-    console.log('FAILURE!')
-    sendResponse(event, context, 'FAILURE')
+    console.log('FAILED!')
+    sendResponse(event, context, 'FAILED')
   }
 }
 
@@ -25,7 +25,7 @@ function setupWatchdogTimer (event, context, callback) {
     console.log('Timeout FAILURE!')
     // Emit event to 'sendResponse', then callback with an error from this
     // function
-    new Promise(() => sendResponse(event, context, 'FAILURE'))
+    new Promise(() => sendResponse(event, context, 'FAILED'))
       .then(() => callback(new Error('Function timed out')))
   }
 
