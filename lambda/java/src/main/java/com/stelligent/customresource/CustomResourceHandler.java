@@ -57,7 +57,7 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
             sendResponse(input, context, "SUCCESS", responseData);
           } else {
             logger.log("FAILURE!");
-            sendResponse(input, context, "FAILURE", responseData);
+            sendResponse(input, context, "FAILED", responseData);
           }
         }
       };
@@ -66,7 +66,7 @@ public class CustomResourceHandler implements RequestHandler<Map<String, Object>
     } catch (final TimeoutException | InterruptedException
                    | ExecutionException e) {
       logger.log("FAILURE!");
-      sendResponse(input, context, "FAILURE", responseData);
+      sendResponse(input, context, "FAILED", responseData);
       // Took too long!
     } finally {
       service.shutdown();
