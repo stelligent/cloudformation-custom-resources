@@ -4,7 +4,7 @@ This repository contains stub code for setting up Lambda-backed CloudFormation C
 
 ### What is a custom resource?
 
-CloudFormation has lots of defined resources that you can use to provision AWS resources. However, if you want to provision an AWS resource that CloudFormation doesn't support yet, or if you want to include some complicated logic during your CloudFormation stack creation / update / deletion, you can use a _custom resource_ to do that easily. Custom resources are basically just Lambda functions that get called by CloudFormation. While not complicated, they do 
+CloudFormation has lots of defined resources that you can use to provision AWS resources. However, if you want to provision an AWS resource that CloudFormation doesn't support yet, or if you want to include some complicated logic during your CloudFormation stack creation / update / deletion, you can use a _custom resource_ to do that easily. Custom resources are basically just Lambda functions that get called by CloudFormation. While not complicated, they do require a bit of configuration to get going. This repository is design to kickstart building custom resources, having the scaffolding for Python, Node.js, and Java functions (_Ruby coming soon!_) and examples in both YML and JSON.
 
 ### How do I use this repository?
 
